@@ -72,7 +72,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                             padding: (defaultTargetPlatform ==
                                     TargetPlatform.windows)
                                 ? const EdgeInsets.only(left: 55, top: 8.0)
-                                : const EdgeInsets.only(top: 10.0, left: 10),
+                                : const EdgeInsets.only(top: 30.0, left: 10),
                             child: Column(
                               children: [
                                 Row(
@@ -87,7 +87,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                                   ],
                                 ),
                                 Row(
-                                  children: [
+                                  children: const [
                                     Flexible(
                                       child: Padding(
                                         padding:
