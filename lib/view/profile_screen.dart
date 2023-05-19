@@ -2,9 +2,11 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sample_login_n_profile/model/api.dart';
 
 import '../model/common.dart';
+import '../model/custome_loader.dart';
 import 'homepage.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -119,6 +121,9 @@ class _ProfileScreen extends State<ProfileScreen> {
                                         controller: _namectrl,
                                         autovalidateMode:
                                             AutovalidateMode.onUserInteraction,
+                                        inputFormatters: [
+                                          NoLeadingSpaceFormatter(),
+                                        ],
                                         decoration: InputDecoration(
                                             hintText: "Enter Name",
                                             border: OutlineInputBorder(
@@ -196,6 +201,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                                   child: MaterialButton(
                                       onPressed: () async {
                                         if (_formkey.currentState!.validate()) {
+                                          CustomUIBlock.block(context);
                                           var response =
                                               await apiservice.submitProfile(
                                                   _emailctrl.text,
@@ -231,5 +237,27 @@ class _ProfileScreen extends State<ProfileScreen> {
         ),
       ),
     );
+  }
+}
+
+class NoLeadingSpaceFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    if (newValue.text.startsWith(' ')) {
+      final String trimedText = newValue.text.trimLeft();
+
+      return TextEditingValue(
+        text: trimedText,
+        selection: TextSelection(
+          baseOffset: trimedText.length,
+          extentOffset: trimedText.length,
+        ),
+      );
+    }
+
+    return newValue;
   }
 }
